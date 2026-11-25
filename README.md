@@ -2,9 +2,7 @@
 
 A small GPT-style (decoder-only) transformer built from scratch in PyTorch. Train it on any text file, then generate new text in the style of that data.
 
-> **Goal:** build, train, and talk to your own transformer while understanding every line.
-
----
+>Goal: build, train, and talk to your own transformer while understanding every line.
 
 ## Table of Contents
 
@@ -23,8 +21,6 @@ A small GPT-style (decoder-only) transformer built from scratch in PyTorch. Trai
 - [References](#references)
 - [License](#license)
 
----
-
 ## Features
 
 - Causal multi-head self-attention, MLP, residual connections, and pre-LayerNorm, all written by hand
@@ -34,8 +30,6 @@ A small GPT-style (decoder-only) transformer built from scratch in PyTorch. Trai
 - Checkpointing and resume, so it works on free Colab/Kaggle sessions
 - Text generation with temperature, top-k, and top-p sampling
 - Test suite covering shapes, causality, tokenizer, and overfitting a single batch
-
----
 
 ## How It Works
 
@@ -50,8 +44,6 @@ text -> tokenizer -> token ids
 The model is trained to predict the next token at every position. At generation time it repeatedly samples a token, appends it to the context, and continues.
 
 See [`architecture.md`](architecture.md) for the full design.
-
----
 
 ## Project Structure
 
@@ -81,8 +73,6 @@ minigpt/
 ├── notebooks/
 └── checkpoints/        # saved models (git-ignored)
 ```
-
----
 
 ## Quickstart
 
@@ -139,14 +129,11 @@ python -m minigpt.generate \
   --top_k 40
 ```
 
----
-
 ## Training
 
 Training is controlled by a YAML config. Key settings:
 
 | Setting | Meaning | Default (`small`) |
-|---|---|---|
 | `block_size` | Context length in tokens | 256 |
 | `n_layer` | Number of transformer blocks | 6 |
 | `n_head` | Attention heads per block | 6 |
@@ -174,12 +161,9 @@ During training you will see train and validation loss, plus a short generated s
 3. Run the Quickstart commands in cells prefixed with `!`.
 4. Save checkpoints to Google Drive so a disconnect does not lose progress.
 
----
-
 ## Generating Text
 
 | Flag | Description | Typical value |
-|---|---|---|
 | `--prompt` | Starting text | `"ROMEO:"` |
 | `--max_new_tokens` | Number of tokens to generate | 300 |
 | `--temperature` | Lower = safer, higher = more random (0 = greedy) | 0.7 to 1.0 |
@@ -187,24 +171,18 @@ During training you will see train and validation loss, plus a short generated s
 | `--top_p` | Nucleus sampling threshold | 0.9 to 1.0 |
 | `--seed` | For reproducible output | 1337 |
 
----
-
 ## Model Configurations
 
 | Config | Layers | Heads | d_model | Context | Params | Hardware |
-|---|---|---|---|---|---|---|
 | `tiny` | 4 | 4 | 128 | 128 | ~0.8M | CPU or laptop |
 | `small` | 6 | 6 | 384 | 256 | ~10.7M | Colab T4 / consumer GPU |
 | `medium` | 12 | 12 | 768 | 512 | ~85M | 16 to 24 GB GPU |
-
----
 
 ## Results
 
 > Fill this section in after your own training run.
 
 | Config | Dataset | Steps | Train loss | Val loss | Perplexity |
-|---|---|---|---|---|---|
 | small | TinyShakespeare (char) | 5000 | _TBD_ | _TBD_ | _TBD_ |
 
 **Loss curve:**
@@ -218,8 +196,6 @@ During training you will see train and validation loss, plus a short generated s
 ```
 <paste a generated sample here>
 ```
-
----
 
 ## Testing
 
@@ -239,8 +215,6 @@ The suite checks:
 
 Run these before any long training job. They catch most wiring bugs early.
 
----
-
 ## Roadmap
 
 - [x] Project design docs
@@ -259,22 +233,19 @@ Run these before any long training job. They catch most wiring bugs early.
 - [ ] LoRA fine-tuning of a pretrained model
 - [ ] Hugging Face export
 
----
-
 ## Documentation
 
 | File | Contents |
-|---|---|
 | [`architecture.md`](architecture.md) | Model design, data flow, components, repo layout |
 | [`TRD.md`](TRD.md) | Technical requirements, hyperparameters, testing, acceptance criteria |
 | [`PRT.md`](PRT.md) | Product requirements, user stories, scope, metrics |
 
----
+
 
 ## Troubleshooting
 
 | Problem | Likely fix |
-|---|---|
+
 | `CUDA out of memory` | Lower `batch_size` or `block_size`; raise `grad_accum_steps`; use the `tiny` config |
 | Loss is `nan` | Lower `learning_rate`, keep gradient clipping on, try `float32` to isolate the issue |
 | Loss stuck near `ln(vocab_size)` (about 4.17 for 65 characters) | Learning rate too low or a bug in the data/targets; run the overfit-one-batch test |
@@ -283,7 +254,6 @@ Run these before any long training job. They catch most wiring bugs early.
 | `n_embd must be divisible by n_head` | Change one of the two values in your config |
 | Garbled output | Train longer, or lower `temperature` and set `top_k` |
 
----
 
 ## References
 
@@ -292,13 +262,10 @@ Run these before any long training job. They catch most wiring bugs early.
 - Andrej Karpathy, *Let's build GPT: from scratch, in code, spelled out* (video) and the [nanoGPT](https://github.com/karpathy/nanoGPT) repository
 - Jay Alammar, [*The Illustrated Transformer*](https://jalammar.github.io/illustrated-transformer/)
 
----
 
 ## License
 
-MIT License. See `LICENSE` for details. (Add a `LICENSE` file before publishing.)
-
----
+MIT License. See `LICENSE` for details. 
 
 ## Acknowledgments
 
